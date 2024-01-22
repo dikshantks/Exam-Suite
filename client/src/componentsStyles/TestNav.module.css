@@ -1,0 +1,47 @@
+
+.na{
+  background-color: white;
+  
+}
+.timerBox {
+  background-color: #00896B;
+  padding:  8px 3px 0 3px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: absolute;
+  left: 50%;
+  margin-top: 2vh;
+  transform: translateX(-50%);
+  width: fit-content;
+  
+}
+
+
+.testname {
+  font-size: 25px;
+   /* margin-top: 1vh; */
+ }
+ .stuname{
+   font-size: 25px;
+   /* margin-top: 1vh; */
+ }
+
+
+@media (max-width: 576px) {
+  .timerBox {
+    font-size: 12px; /* Adjust the font size as needed */
+    margin-top: 12px;
+  }
+  .testname{
+    font-size: medium;
+    
+  }
+  .stuname{
+    font-size: medium;
+  }
+}
+
+
+
+
+

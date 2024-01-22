@@ -1,0 +1,46 @@
+const mongoose = require("mongoose");
+
+const Schema = mongoose.Schema;
+
+const testSchema = new Schema({
+  testname: {
+    type: String,
+    required: true,
+  },
+  pin: {
+    type: String,
+    required: true,
+  },
+  email: {
+    type: String,
+    required: true,
+  },
+  amount: {
+    type: String,
+    required: true,
+  },
+  topic: {
+    type: String,
+    required: true,
+  },
+  time: {
+    type: String,
+    required: true,
+  },
+  expiry: {
+    type: Date,
+    required: true,
+  },
+  created: {
+    type: Date,
+    required: true,
+  },
+  imageUrl: {
+    type: String,
+    required: true,
+  },
+});
+
+const test = mongoose.model("test", testSchema);
+
+module.exports = test;

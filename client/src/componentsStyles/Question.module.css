@@ -1,0 +1,13 @@
+.answerInput{
+  background-color:  rgb(207, 228, 224,0.31);
+  padding: 20px;
+}
+.optionItem{
+  background-color: rgb(207, 228, 224,0.31);
+}
+.cardbody{
+  background-color:rgb(0, 91, 147,0.16);
+}
+.selectedOption{
+  background-color:rgb(0,137,107,0.54);
+}

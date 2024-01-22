@@ -1,0 +1,23 @@
+
+.imgg{
+height: 6vh;
+}
+
+.na {
+  background-color: transparent ;
+  padding-bottom: 0 !important;
+}
+.custom-button {
+  background-color: #00896B;
+  font-weight: bold;
+  color: white;
+  text-align: center;
+}
+.custom-button:hover {
+  background-color: #00896bb2;
+  color: white; 
+}
+
+
+
+

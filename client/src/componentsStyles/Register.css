@@ -1,0 +1,35 @@
+
+.bn{
+   
+  min-width:fit-content;
+  min-height: fit-content;
+  color: #FFFFFF;
+  background-color: #00896B;
+  padding: 8px 16px;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  color: #fff;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+  border: none;
+  cursor: pointer;
+  }
+
+.bn:hover {
+  background-color: #00796bbe;
+  color: white;
+}
+
+.text{
+    color: #0d421f;
+    text-emphasis: bold;
+    text-align: center;
+  }
+
+.fieldss{
+    border-radius: 10px;
+    border-color: #073d31;
+}
+  
