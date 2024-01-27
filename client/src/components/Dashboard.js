@@ -28,6 +28,20 @@ function Dashboard(props) {
       "auth-token": localStorage.getItem("auth-token"),
     },
   };
+  useEffect(() => {
+    instance
+      .post("/api/test/gettests", {}, options)
+      .then((res) => {
+        console.log("this here");
+        // console.log(res.data);
+        setTests(res.data);
+      })
+      .catch((err) => {
+        if (!localStorage.getItem("auth-token")) history.push("/");
+        else alert.show("Couldn't fetch tests. Please reload the page.");
+      });
+  }, [modalIsOpen]);
+
   const getResults = (pin) => {
     instance
       .post("/api/test/getresults", { pin }, options)
@@ -46,7 +60,7 @@ function Dashboard(props) {
     instance
       .post("/api/test/getquestions", { pin })
       .then((res) => {
-        console.log(res, "got the question guyss");
+        console.log(res, "got the question guys");
         history.push("/Edittest", {
           data: res.data,
           testdetails: tests.find((test) => test.pin === pin),
@@ -62,18 +76,6 @@ function Dashboard(props) {
         }
       });
   };
-
-  useEffect(() => {
-    instance
-      .post("/api/test/gettests", {}, options)
-      .then((res) => {
-        setTests(res.data);
-      })
-      .catch((err) => {
-        if (!localStorage.getItem("auth-token")) history.push("/");
-        else alert.show("Couldn't fetch tests. Please reload the page.");
-      });
-  }, [modalIsOpen]);
 
   const onSubmit = (event) => {
     event.preventDefault();
@@ -107,7 +109,6 @@ function Dashboard(props) {
 
       <div className="containerrr mt-5">
         <div className="d-flex justify-content-center mb-4">
-          {/* <Badge bg="custom" className="dashboard-badge">Welcome {localStorage.getItem("name")}</Badge> */}
           <Alert
             variant="custom"
             className="dashboard-badge"

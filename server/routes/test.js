@@ -22,14 +22,11 @@ router.route("/").post(async (req, res) => {
   };
 
   ques.results = await question.find({ category: doc.topic }).exec();
-  if (ques.results.length > 0) 
-    {
-      ques.response_code = 1;
-    } 
-  else 
-    {
-      console.log("failed");
-    }
+  if (ques.results.length > 0) {
+    ques.response_code = 1;
+  } else {
+    console.log("failed");
+  }
 
   ques.time = doc.time;
   ques.category = doc.topic;
@@ -50,26 +47,54 @@ router.route("/submittest").post(async (req, res) => {
   const indi = req.body.loc;
   const testDate = req.body.testDate;
   let temp = 0;
-  result.findOne({ testID: testID }).sort({_id:-1}).limit(1)
+  result
+    .findOne({ testID: testID })
+    .sort({ _id: -1 })
+    .limit(1)
     .then((existingResult) => {
       if (existingResult) {
         const attempts = existingResult.attempts + 1;
         temp = existingResult.testID;
-        const resultEntry = new result({ aadhaar,testID:temp, firstName, pin, score, result:resu, individualScore:indi,testDate, attempts});
-          resultEntry
-          .save()
-          .then(() => res.send("result added!"))
-          .catch((err) => res.status(400).json("Could not add to database: " + err));
-      } else {
-        const attempts = 1
-        const resultEntry = new result({ aadhaar,testID, firstName, pin, score, result:resu, individualScore:indi,testDate, attempts });
-      
+        const resultEntry = new result({
+          aadhaar,
+          testID: temp,
+          firstName,
+          pin,
+          score,
+          result: resu,
+          individualScore: indi,
+          testDate,
+          attempts,
+        });
         resultEntry
           .save()
           .then(() => res.send("result added!"))
-          .catch((err) => res.status(400).json("Could not add to database: " + err));
+          .catch((err) =>
+            res.status(400).json("Could not add to database: " + err)
+          );
+      } else {
+        const attempts = 1;
+        const resultEntry = new result({
+          aadhaar,
+          testID,
+          firstName,
+          pin,
+          score,
+          result: resu,
+          individualScore: indi,
+          testDate,
+          attempts,
+        });
+
+        resultEntry
+          .save()
+          .then(() => res.send("result added!"))
+          .catch((err) =>
+            res.status(400).json("Could not add to database: " + err)
+          );
       }
-})});
+    });
+});
 
 router.use("/gettests", verify);
 router.use("/getresults", verify);
@@ -101,7 +126,7 @@ router.route("/addtest").post(async (req, res) => {
   const testname = req.body.topic;
   const email = req.user.email.toLowerCase();
   const amount = req.body.amount;
-  const topic = await test.countDocuments({}).exec() + 2;
+  const topic = (await test.countDocuments({}).exec()) + 2;
   const time = req.body.time;
   const expiry = Date.parse(req.body.expiry);
   const created = Date.parse(req.body.created);
@@ -129,8 +154,9 @@ router.route("/getquestions").post(async (req, res) => {
   const doc = await test.findOne({ pin: pin }).exec();
   const ques = await question.find({ category: doc.topic }).exec();
   let response_code = 0;
-  // console.log(doc);
-  // console.log(ques.length);
+  console.log(ques);
+  console.log(pin);
+  console.log(doc);
   if (ques.length === 0) {
     return res.status(405).send({ message: "No questions found" });
   }
@@ -152,14 +178,18 @@ router.route("/updateScore").put(async (req, res) => {
   const aadhaar = req.body.aadhaar;
   const score = req.body.score;
   const indi = req.body.indi;
-  result.findOneAndUpdate({pin:pin,aadhaar:aadhaar},{score:score,individualScore:indi})
-  .then((result) => {
-    res.send("Score updated");
-  })
-  .catch((err) => {
-    console.log(err);
-    res.status(400).send("Error updating score");
-  });
+  result
+    .findOneAndUpdate(
+      { pin: pin, aadhaar: aadhaar },
+      { score: score, individualScore: indi }
+    )
+    .then((result) => {
+      res.send("Score updated");
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(400).send("Error updating score");
+    });
 });
 
 router.route("/studentProfile").post(async (req, res) => {
@@ -176,42 +206,59 @@ router.route("/studentProfile").post(async (req, res) => {
   const state = req.body.state;
   const city = req.body.city;
   const dob = req.body.dob;
-  
+
   let dateOfBirth = new Date();
   gender = gender.charAt(0).toUpperCase() + gender.slice(1);
-  if (dob){
-   dateOfBirth = new Date(dob);
+  if (dob) {
+    dateOfBirth = new Date(dob);
   }
-  
-  const testID = firstName.substring(0, 2) + lastName.substring(0, 2) + fatherName.substring(0, 2) + motherName.substring(0, 2) + gender.substring(0, 1) + clas;
-  student.findOne({ testID: testID })
-  .then(existingProfile => {
-    if (existingProfile === null) 
-  {
-    const profile = new student({ firstName, lastName, ration, aadhaar, fatherName, motherName, gender, projectName, state, city, testID, class:clas, dob:dateOfBirth});
-    profile.save()
-      .then(() => {
-        console.log("Student profile added!");
-        res.send({ ID: testID });
-      })
-      .catch((err) => {
-        console.log(err.message);
-        res.status(400).json("Could not add to the database: " + err);
+
+  const testID =
+    firstName.substring(0, 2) +
+    lastName.substring(0, 2) +
+    fatherName.substring(0, 2) +
+    motherName.substring(0, 2) +
+    gender.substring(0, 1) +
+    clas;
+  student.findOne({ testID: testID }).then((existingProfile) => {
+    if (existingProfile === null) {
+      const profile = new student({
+        firstName,
+        lastName,
+        ration,
+        aadhaar,
+        fatherName,
+        motherName,
+        gender,
+        projectName,
+        state,
+        city,
+        testID,
+        class: clas,
+        dob: dateOfBirth,
       });
+      profile
+        .save()
+        .then(() => {
+          console.log("Student profile added!");
+          res.send({ ID: testID });
+        })
+        .catch((err) => {
+          console.log(err.message);
+          res.status(400).json("Could not add to the database: " + err);
+        });
+    } else {
+      res.send({ ID: testID });
     }
-    else{
-      res.send({ID:testID})
-    }
-  }
-  )
+  });
 });
 
 router.route("/getStudentProfile").post(async (req, res) => {
   const testID = req.body.testID;
   try {
-    const doc = await student.findOne({ testID:testID }).exec();
+    const doc = await student.findOne({ testID: testID }).exec();
     res.send(doc);
-  } catch (err) { 
+  } catch (err) {
     return res.status(400).send();
   }
 });

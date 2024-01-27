@@ -200,6 +200,15 @@ function CustomNavbar(props) {
                   variant="custom"
                   className="custom-button"
                   as={Link}
+                  to="/dashboard"
+                  style={{ width: "120px", marginRight: "10px" }} // Add marginRight for padding
+                >
+                  Dashboard
+                </Button>
+                <Button
+                  variant="custom"
+                  className="custom-button"
+                  as={Link}
                   to="/logout"
                   style={{ width: "100px" }}
                 >
